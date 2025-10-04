@@ -2,9 +2,14 @@
 <html>
 <head>
   <title>RTChat Login</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth-compat.js"></script>
+
   <style>
     body {
       background-color: #f0f8ff;
@@ -56,7 +61,7 @@
       measurementId: "G-NCMQYHK4DH"
     };
 
-    // Initialize Firebase using compat version
+    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
     function githubLogin() {
@@ -75,3 +80,4 @@
   </script>
 </body>
 </html>
+
