@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RTChat 💬</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    #chat-container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    #messages {
+      height: 300px;
+      overflow-y: scroll;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .message {
+      margin-bottom: 8px;
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+    #messageInput {
+      width: 80%;
+      padding: 10px;
+    }
+    #sendBtn {
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="chat-container">
+    <h2>RTChat 💬</h2>
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="Type your message..." />
+    <button id="sendBtn">Send</button>
+  </div>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDSHpy3Q6UnmtgST3lYRraUSX_gQLQrMZc",
+      authDomain: "chatinrealtimertchat.firebaseapp.com",
+      projectId: "chatinrealtimertchat",
+      storageBucket: "chatinrealtimertchat.appspot.com",
+      messagingSenderId: "140140452963",
+      appId: "1:140140452963:web:c62f5c2b73a05d8dd36c56"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const messagesRef = db.collection("messages");
+
+    // Send message
+    document.getElementById("sendBtn").addEventListener("click", () => {
+      const input = document.getElementById("messageInput");
+      const text = input.value.trim();
+      if (text !== "") {
+        messagesRef.add({
+          text: text,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        input.value = "";
+      }
+    });
+
+    // Display messages in real time
+    messagesRef.orderBy("timestamp").onSnapshot(snapshot => {
+      const messagesDiv = document.getElementById("messages");
+      messagesDiv.innerHTML = ""; // Clear existing messages
+      snapshot.forEach(doc => {
+        const msg = doc.data();
+        const msgDiv = document.createElement("div");
+        msgDiv.className = "message";
+        msgDiv.textContent = msg.text;
+        messagesDiv.appendChild(msgDiv);
+      });
+      messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto-scroll
+    });
+  </script>
+</body>
+</html>
